@@ -1,6 +1,11 @@
 pipeline {
     agent { label 'dummy-slave' }
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Build') {
             steps {
                 sh 'echo Build'
@@ -8,6 +13,7 @@ pipeline {
         }
         stage('Test') {
             steps {
+                sh 'git log'
                 sh 'echo Test'
             }
         }
