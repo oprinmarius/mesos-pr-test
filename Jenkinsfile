@@ -1,25 +1,36 @@
 pipeline {
     agent { label 'dummy-slave' }
     stages {
-        stage('Checkout') {
+        stage('init') {
             steps {
-                checkout scm
+	    	sh 'git log'
+                echo "Init result: ${currentBuild.result}"
+                echo "Init currentResult: ${currentBuild.currentResult}"
             }
         }
-        stage('Build') {
+        stage('generate windows blob') {
             steps {
-                sh 'echo Build'
+                echo "During Build result: ${currentBuild.result}"
+                echo "During Build currentResult: ${currentBuild.currentResult}"
+            }
+            post {
+                always {
+                    echo "Post-Build result: ${currentBuild.result}"
+                    echo "Post-Build currentResult: ${currentBuild.currentResult}"
+                }
             }
         }
-        stage('Test') {
+        stage('dcos testing') {
             steps {
                 sh 'git log'
                 sh 'echo Test'
             }
         }
-        stage('Deploy') {
+        stage('post result') {
             steps {
                 sh 'echo Deploy'
+                echo "post result: ${currentBuild.result}"
+                echo "post currentResult: ${currentBuild.currentResult}"
             }
         }
     }
